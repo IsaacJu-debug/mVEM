@@ -2,7 +2,7 @@ clc; close all;
 clear variables;
 
 %% Parameters
-maxIt = 5;
+maxIt = 1;
 h = zeros(maxIt,1);      N = zeros(maxIt,1);
 ErrL2 = zeros(maxIt,1);  ErrH1 = zeros(maxIt,1);
 
@@ -18,6 +18,10 @@ for k = 1:maxIt
     load( ['SimpleMesh3data', num2str(k), '.mat'] ); % polyhedral mesh
     %load( ['mesh3data', num2str(k), '.mat'] ); % polyhedral mesh
     %[node3,~,elem3] = cubemesh([0 1 0 1 0 1], 1/(2*k)); % tetrahedral mesh
+    
+    scale = zeros(2);
+    [node3,~,elem3] = simpleRectMesh3d(1,1,1,1,1,1, scale); % hexa mesh
+    % showmesh(node3, elem3);
     % get boundary information
     bdStruct = setboundary3(node3,elem3,bdNeumann);
     % solve

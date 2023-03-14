@@ -65,7 +65,7 @@ for iel = 1:NT
     gradmMat = [0 0 0; 1/hK 0 0; 0 1/hK 0; 0 0 1/hK];
     
     % -------- transition matrix ----------
-    D = m(x,y,z);
+    D = m(x,y,z); % basis change
     
     % ----------- elliptic projection -------------
     B = zeros(4,Ndof);
@@ -108,6 +108,8 @@ for iel = 1:NT
     
     % --------- local stiffness matrix ---------
     Pis = Gs\Bs;   Pi  = D*Pis;   I = eye(size(Pi));
+    % AK = pi_nabla.T * G_tilda 8 pi_nabla + pde.c * pi_nabla.T * H *
+    % pi_nabla + hK * (1 + pde.c * hK^2)*(I - Pi).T * (I - Pi)
     AK  = Pis'*G*Pis + pde.c*Pis'*H*Pis ...
         + hK*(1+pde.c*hK^2)*(I-Pi)'*(I-Pi); 
     AK = reshape(AK,1,[]); % straighten
@@ -166,7 +168,7 @@ if ~isempty(bdFaceN)
         % g_N
         g_N = @(s,t) dot(Du(Coord(s,t)), nf);
         fun = @(s,t) g_N(s,t).*[1+0*s, (s-sc)/hf, (t-tc)/hf];
-        Ff = integralPolygon(fun,3,nodef);
+        Ff = integralPolygon(fun,3,nodef); % 2D integration rule
         Ff = Pifs'*Ff(:);
         % assembly index
         elemb(ib+1:ib+nv) = faces(:);
