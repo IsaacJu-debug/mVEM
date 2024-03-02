@@ -15,13 +15,13 @@ bdNeumann = 'x==0'; % string for Neumann
 for k = 1:maxIt
     % load mesh
     fprintf('Mesh %d: \n', k);
-    %load( ['SimpleMesh3data', num2str(k), '.mat'] ); % polyhedral mesh
-    load( ['mesh3data', num2str(k), '.mat'] ); % polyhedral mesh
-    [node3,~,elem3] = cubemesh([0 1 0 1 0 1], 1/(2*k)); % tetrahedral mesh
+    load( ['SimpleMesh3data', num2str(k), '.mat'] ); % polyhedral mesh
+    %load( ['mesh3data', num2str(k), '.mat'] ); % polyhedral mesh
+    %[node3,~,elem3] = cubemesh([0 1 0 1 0 1], 1/(2*k)); % tetrahedral mesh
     
     scale = zeros(2);
-    %[node3,~,elem3] = simpleRectMesh3d(1,1,1,1,1,1, scale); % hexa mesh
-    showmesh(node3, elem3);
+    [node3,~,elem3] = simpleRectMesh3d(1,1,1,1,1,1, scale); % hexa mesh
+    % showmesh(node3, elem3);
     % get boundary information
     bdStruct = setboundary3(node3,elem3,bdNeumann);
     % solve
